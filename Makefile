@@ -58,7 +58,7 @@ endif
 TOOLS_BIN = find_log4j$(BINEXT)
 
 COMMON_PACKAGE_FILES = README.md LICENSE Changelog.txt
-SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile src/*.c build/*.cbp build/*.depend
+SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile src/*.h src/*.c build/*.cbp build/*.depend
 
 all: $(TOOLS_BIN)
 
