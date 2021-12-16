@@ -43,6 +43,8 @@ jobs:
         tar xfJ libdirtrav-0.2.15.tar.xz
         cd libdirtrav-0.2.15
         make install PREFIX=../deps DOXYGEN=
+        cd ..
+        rm -rf libdirtrav-0.2.15
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-I../deps/include LDFLAGS=-L../deps/lib
         tar cfj ./${{ matrix.config.artifact }} --strip-components=1 build_result
     - name: Pack
