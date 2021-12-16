@@ -43,6 +43,18 @@ struct config_struct {
   FILE* dst;
 };
 
+size_t get_path_length_from_path (const char* path)
+{
+    size_t pos = strlen(path);
+    while (pos > 0 && path[pos - 1] != '/'
+#ifdef _WIN32
+      && path[pos - 1] != '\\'
+#endif
+    )
+      pos--;
+    return pos;
+}
+
 int file_found (dirtrav_entry info)
 {
   //printf("%s\n", info->fullpath); return 0;/////
@@ -78,6 +90,8 @@ int main (int argc, char *argv[], char *envp[])
 {
   int showhelp = 0;
   int showversion = 0;
+  int createparentpath = 0;
+  int deleteifempty = 0;
   char* dstfilename = NULL;
   struct config_struct config = {
     .count = 0,
@@ -85,16 +99,18 @@ int main (int argc, char *argv[], char *envp[])
   };
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'h', "help",            NULL,   miniargv_cb_increment_int, &showhelp,    "show command line help"},
-    {'v', "version",         NULL,   miniargv_cb_increment_int, &showversion, "show program version"},
-    {'o', "output",          "FILE", miniargv_cb_strdup,        &dstfilename, "file where to write output to (\"-\" for console)\nif not specified a file <hostname>.txt will be created in the same folder as the executable file"},
+    {'h', "help",            NULL,   miniargv_cb_increment_int, &showhelp,         "show command line help"},
+    {'v', "version",         NULL,   miniargv_cb_increment_int, &showversion,      "show program version"},
+    {'o', "output",          "FILE", miniargv_cb_strdup,        &dstfilename,      "file where to write output to (\"-\" for console)\nif not specified a file <hostname>.txt will be created in the same folder as the executable file"},
+    {'p', "parent",          NULL,   miniargv_cb_increment_int, &createparentpath, "create directory output file if it doesn't exist yet"},
+    {'d', "delete",          NULL,   miniargv_cb_increment_int, &deleteifempty,    "delete output file if nothing was found"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
   //parse environment and command line flags
   if (miniargv_process_arg(argv, argdef, NULL, NULL) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
-  if (showhelp || argc <= 1) {
+  if (showhelp /*|| argc <= 1*/) {
     printf(
       PROGRAM_NAME " - Version " FIND_LOG4J_VERSION_STRING " - " FIND_LOG4J_LICENSE " - " FIND_LOG4J_CREDITS "\n"
       PROGRAM_DESC "\n"
@@ -112,8 +128,8 @@ int main (int argc, char *argv[], char *envp[])
   }
   //set default output filename if none was given
   if (!dstfilename) {
+    size_t pos;
     char* hostname = NULL;
-    size_t pos = strlen(argv[0]);
 #ifdef _WIN32
     DWORD hostnamelen = 0;
     GetComputerNameExA(ComputerNamePhysicalNetBIOS, NULL, &hostnamelen);
@@ -138,35 +154,46 @@ int main (int argc, char *argv[], char *envp[])
       fprintf(stderr, "Unable to get computer name\n");
       return 1;
     }
-    while (pos > 0 && argv[0][pos - 1] != '/'
-#ifdef _WIN32
-      && argv[0][pos - 1] != '\\'
-#endif
-    )
-      pos--;
+    pos = get_path_length_from_path(argv[0]);
     dstfilename = (char*)malloc(pos + strlen(hostname) + strlen(FILE_EXT) + 1);
     memcpy(dstfilename, argv[0], pos);
     strcpy(dstfilename + pos, hostname);
     strcpy(dstfilename + pos + strlen(hostname), FILE_EXT);
   }
-  //create output file
-  if (strcmp(dstfilename, "-") == 0) {
-    config.dst = stdout;
-  } else if ((config.dst = fopen(dstfilename, "wb")) == NULL) {
-    fprintf(stderr, "Error creating output file: %s\n", dstfilename);
-    return 2;
-  }
 
   //try to get elevated access
   dirtrav_elevate_access();
 
+  //open output file
+  if (strcmp(dstfilename, "-") == 0) {
+    config.dst = stdout;
+  } else {
+    if (createparentpath) {
+      size_t parentpathlen = get_path_length_from_path(dstfilename);
+      char* parentpath = strdup(dstfilename);
+      parentpath[parentpathlen] = 0;
+      dirtrav_make_full_path(NULL, parentpath, S_IRWXU | S_IRWXG | S_IRWXO);
+      free(parentpath);
+    }
+    if ((config.dst = fopen(dstfilename, "wb")) == NULL) {
+      fprintf(stderr, "Error creating output file: %s\n", dstfilename);
+      return 2;
+    }
+  }
+
   //scan disk(s)
   dirtrav_iterate_roots(drive_found, &config);
+
+  //close output file
+  fclose(config.dst);
+
+  //clean output file if empty
+  if (deleteifempty && config.count == 0 && strcmp(dstfilename, "-") != 0) {
+    unlink(dstfilename);
+  }
 
   //report number of files found
   printf("Files found: %" PRIu64 "\n", config.count);
 
-  //clean up
-  fclose(config.dst);
   return 0;
 }
