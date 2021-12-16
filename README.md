@@ -5,12 +5,12 @@ Searches all disks for log4j-*.jar files and writes the matching paths to <hostn
 Description
 -----------
 This command line application searches all disks for log4j-*.jar files and writes the matching paths to <hostname>.txt in the same folder as the executable.
-This tool was needed when Apache Log4j Security Vulnerabilities CVE-2021-45046 and CVE-2021-44228 were exposed.
+This tool was needed when Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228) were exposed.
 
 Dependencies
 ------------
 To build find_log4j from source the following dependency must be installed:
- - libdirtrav
+ - [libdirtrav](https://github.com/brechtsanders/libdirtrav)
 
 License
 -------
