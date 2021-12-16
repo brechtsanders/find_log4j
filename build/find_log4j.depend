@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1639501857 source:z:\find_log4j\find_log4j.c
+	<stdlib.h>
+	<stdio.h>
+	<stdint.h>
+	<inttypes.h>
+	<string.h>
+	<unistd.h>
+	<winsock2.h>
+	<windows.h>
+	<dirtrav.h>
+	<quickmail.h>
+
+1639645117 source:z:\find_log4j\src\find_log4j.c
+	<stdlib.h>
+	<stdio.h>
+	<stdint.h>
+	<inttypes.h>
+	<string.h>
+	<unistd.h>
+	<winsock2.h>
+	<windows.h>
+	<limits.h>
+	<dirtrav.h>
+
