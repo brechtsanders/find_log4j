@@ -37,14 +37,12 @@ jobs:
           }
     steps:
     - uses: actions/checkout@v1
-    - name: Prerequisite libdirtrav
+    - name: Compile, install, package
       run: |
         wget https://github.com/brechtsanders/libdirtrav/releases/download/0.2.15/libdirtrav-0.2.15.tar.xz
         tar xfJ libdirtrav-0.2.15.tar.xz
         cd libdirtrav-0.2.15
         make install PREFIX=../deps DOXYGEN=
-    - name: Compile, install, package
-      run: |
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-I../deps/include LDFLAGS=-L../deps/lib
         tar cfj ./${{ matrix.config.artifact }} --strip-components=1 build_result
     - name: Pack
