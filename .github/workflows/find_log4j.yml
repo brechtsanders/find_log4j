@@ -37,7 +37,7 @@ jobs:
           }
     steps:
     - uses: actions/checkout@v1
-    - name: Prerequisite: libdirtrav
+    - name: Prerequisite libdirtrav
       run: |
         wget https://github.com/brechtsanders/libdirtrav/releases/download/0.2.15/libdirtrav-0.2.15.tar.xz
         tar xfJ libdirtrav-0.2.15.tar.xz
