@@ -75,7 +75,7 @@ install: all
 	$(CP) $(TOOLS_BIN) $(PREFIX)/bin/
 
 version:
-	head -1 Changelog.txt > version
+	sed -ne "s/^#define\s*FIND_LOG4J_VERSION_[A-Z]*\s*\([0-9]*\)\s*$$/\1./p" src/find_log4j_version.h | tr -d "\n" | sed -e "s/\.$$//" > version
 
 .PHONY: package
 package: version

@@ -5,6 +5,9 @@
   * fix GitHub action to build libdirtrav prerequisite
   * fix undefined HOST_NAME_MAX in macOS
   * add support command line flags (adding dependancy on miniargv)
+  * added -o command line flag to specify output file (or - for console)
+  * added -p command line flag to create output file parent path if needed
+  * added -d command line flag to delete empty output if nothing was found
 
 0.0.1
 

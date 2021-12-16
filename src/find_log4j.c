@@ -21,8 +21,9 @@
 
 #if defined(_MSC_VER) || (defined(__MINGW32__) && !defined(__MINGW64__))
 #define strcasecmp _stricmp
-#define strcasestr _stristr
-#elif defined(_WIN32)
+//#define strcasestr _stristr
+#endif
+#ifdef _WIN32
 static char* strcasestr (const char* haystack, const char* needle)
 {
   size_t needlelen;
