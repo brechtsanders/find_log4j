@@ -13,7 +13,10 @@
 #endif
 #include <miniargv.h>
 #include <dirtrav.h>
+#include "find_log4j_version.h"
 
+#define PROGRAM_NAME "find_log4j"
+#define PROGRAM_DESC "Tool to search for Apache Log4j Security Vulnerabilities CVE-2021-45046 and CVE-2021-44228"
 #define FILE_EXT ".txt"
 
 #if defined(_MSC_VER) || (defined(__MINGW32__) && !defined(__MINGW64__))
@@ -71,16 +74,44 @@ int drive_found (dirtrav_entry info)
   return dirtrav_traverse_directory(info->fullpath, file_found, folder_found, NULL, info->callbackdata);
 }
 
-int main(int argc, char *argv[])
+int main (int argc, char *argv[], char *envp[])
 {
-  char* dstfilename;
+  int showhelp = 0;
+  int showversion = 0;
+  char* dstfilename = NULL;
   struct config_struct config = {
     .count = 0,
     .dst = stdout
   };
-
-  //get destination filename
-  {
+  //definition of command line arguments
+  const miniargv_definition argdef[] = {
+    {'h', "help",            NULL,   miniargv_cb_increment_int, &showhelp,    "show command line help"},
+    {'v', "version",         NULL,   miniargv_cb_increment_int, &showversion, "show program version"},
+    {'o', "output",          "FILE", miniargv_cb_strdup,        &dstfilename, "file where to write output to (\"-\" for console)\nif not specified a file <hostname>.txt will be created in the same folder as the executable file"},
+    {0, NULL, NULL, NULL, NULL, NULL}
+  };
+  //parse environment and command line flags
+  if (miniargv_process_arg(argv, argdef, NULL, NULL) != 0)
+    return 1;
+  //show help if requested or if no command line arguments were given
+  if (showhelp || argc <= 1) {
+    printf(
+      PROGRAM_NAME " - Version " FIND_LOG4J_VERSION_STRING " - " FIND_LOG4J_LICENSE " - " FIND_LOG4J_CREDITS "\n"
+      PROGRAM_DESC "\n"
+      "Usage: " PROGRAM_NAME " "
+    );
+    miniargv_arg_list(argdef, 1);
+    printf("\n");
+    miniargv_help(argdef, NULL, 26, 0);
+    return 0;
+  }
+  //show version if requested
+  if (showversion) {
+    printf(PROGRAM_NAME " " FIND_LOG4J_VERSION_STRING "\n");
+    return 0;
+  }
+  //set default output filename if none was given
+  if (!dstfilename) {
     char* hostname = NULL;
     size_t pos = strlen(argv[0]);
 #ifdef _WIN32
@@ -119,7 +150,9 @@ int main(int argc, char *argv[])
     strcpy(dstfilename + pos + strlen(hostname), FILE_EXT);
   }
   //create output file
-  if ((config.dst = fopen(dstfilename, "wb")) == NULL) {
+  if (strcmp(dstfilename, "-") == 0) {
+    config.dst = stdout;
+  } else if ((config.dst = fopen(dstfilename, "wb")) == NULL) {
     fprintf(stderr, "Error creating output file: %s\n", dstfilename);
     return 2;
   }
