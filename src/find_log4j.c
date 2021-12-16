@@ -94,6 +94,9 @@ int main(int argc, char *argv[])
       }
     }
 #else
+#ifndef HOST_NAME_MAX
+#define HOST_NAME_MAX 255
+#endif
     char hostname_buf[HOST_NAME_MAX];
     if (gethostname(hostname_buf, sizeof(hostname_buf)) == 0) {
       hostname = strdup(hostname_buf);
