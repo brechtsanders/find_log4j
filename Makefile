@@ -48,6 +48,7 @@ endif
 endif
 PACKAGE_NAME := find_log4j
 
+MINIARGV_LDFLAGS = -lminiargv
 LIBDIRTRAV_LDFLAGS = -ldirtrav
 
 ifneq ($(OS),Windows_NT)
@@ -65,7 +66,7 @@ all: $(TOOLS_BIN)
 	$(CC) -c -o $@ $< $(CFLAGS) 
 
 find_log4j$(BINEXT): src/find_log4j.o
-	$(CC) -o $@ $^ $(STRIPFLAG) $(LIBDIRTRAV_LDFLAGS) $(LDFLAGS)
+	$(CC) -o $@ $^ $(STRIPFLAG) $(MINIARGV_LDFLAGS_LDFLAGS) $(LIBDIRTRAV_LDFLAGS) $(LDFLAGS)
 
 tools: $(TOOLS_BIN)
 

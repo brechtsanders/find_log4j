@@ -4,10 +4,11 @@
 
   * fix GitHub action to build libdirtrav prerequisite
   * fix undefined HOST_NAME_MAX in macOS
+  * add support command line flags (adding dependancy on miniargv)
 
 0.0.1
 
 2021-12-15  Brecht Sanders  https://github.com/brechtsanders/
 
-  * initial release
+  * initial release (dumps output to <hostname>.txt in folder of executable)
 

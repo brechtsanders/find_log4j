@@ -31,9 +31,14 @@ jobs:
           }
     steps:
     - uses: actions/checkout@v1
+    - name: Prerequisite miniargv
+      run: |
+        git clone https://github.com/brechtsanders/miniargv
+        cd miniargv
+        make install PREFIX=../deps DOXYGEN=
     - name: Prerequisite libdirtrav
       run: |
-        git clone https://github.com/brechtsanders/libdirtrav -b 0.2.15
+        git clone https://github.com/brechtsanders/libdirtrav
         cd libdirtrav
         make install PREFIX=../deps DOXYGEN=
     - name: Compile, install, package

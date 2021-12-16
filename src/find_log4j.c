@@ -11,6 +11,7 @@
 #else
 #include <limits.h>
 #endif
+#include <miniargv.h>
 #include <dirtrav.h>
 
 #define FILE_EXT ".txt"
