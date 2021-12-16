@@ -94,9 +94,4 @@ endif
 
 .PHONY: clean
 clean:
-	$(RM) src/*.o $(TOOLS_BIN) version $(PACKAGE_NAME)-*.tar.xz
-ifeq ($(OS),Windows_NT)
-	$(RM) *.def
-endif
-	$(RMDIR) doc/html doc/man
-
+	$(RM) src/*.o $(TOOLS_BIN) version
