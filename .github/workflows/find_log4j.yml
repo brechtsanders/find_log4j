@@ -42,8 +42,6 @@ jobs:
         git clone https://github.com/brechtsanders/libdirtrav -b 0.2.15
         cd libdirtrav
         make install PREFIX=../deps DOXYGEN=
-        cd ..
-        rm -rf libdirtrav
     - name: Compile, install, package
       run: |
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-Ideps/include LDFLAGS=-Ldeps/lib
