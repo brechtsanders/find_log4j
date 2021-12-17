@@ -44,12 +44,10 @@ jobs:
     - name: Prerequisite libmultifinder
       run: |
         git clone https://github.com/brechtsanders/libmultifinder
-        cd libdirtrav
+        cd libmultifinder
         make install PREFIX=../deps DOXYGEN= CC=${{ matrix.config.cc }}
     - name: Compile, install, package
       run: |
-        ls -l deps/include
-        ls -l deps/lib
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-Ideps/include LDFLAGS=-Ldeps/lib
         tar cfj ./${{ matrix.config.artifact }} --strip-components=1 build_result
     - name: Pack

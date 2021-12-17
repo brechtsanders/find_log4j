@@ -3,6 +3,7 @@
 2021-12-17  Brecht Sanders  https://github.com/brechtsanders/
 
   * use 32K read buffer for scanning files (instead of 2K)
+  * fix GitHub action to build libmultifinder prerequisite
 
 0.0.3
 
