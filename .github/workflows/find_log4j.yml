@@ -46,9 +46,8 @@ jobs:
       run: |
         git clone https://github.com/brechtsanders/libmultifinder
         cd libmultifinder
-        cmake --version
-        ninja --version
-        make install PREFIX=../deps DOXYGEN= CC=${{ matrix.config.cc }}
+        cmake -GNinja -DCMAKE_INSTALL_PREFIX:PATH=../deps -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_TOOLS:BOOL=OFF
+        ninja install/strip
     - name: Compile, install, package
       run: |
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-Ideps/include LDFLAGS=-Ldeps/lib
