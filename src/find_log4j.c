@@ -20,7 +20,7 @@
 #define PROGRAM_DESC "Tool to search for Apache Log4j Security Vulnerabilities CVE-2021-45046 and CVE-2021-44228"
 #define FILE_EXT ".txt"
 
-#define READBUFFERSIZE 2048
+#define READBUFFERSIZE (32 * 1024)
 
 #if defined(_MSC_VER) || (defined(__MINGW32__) && !defined(__MINGW64__))
 #define strcasecmp _stricmp
@@ -49,6 +49,7 @@ struct config_struct {
   int simplesearch;
   multifinder finder;
   const char* currentpath;
+  char* readbuffer;
 };
 
 //get position after directory path (including trailing path separator)
@@ -90,11 +91,10 @@ int file_found (dirtrav_entry info)
     if (ext && (strcasecmp(ext, ".jar") == 0 || strcasecmp(ext, ".ear") == 0 || strcasecmp(ext, ".war") == 0)) {
       FILE* src;
       if ((src = fopen(info->fullpath, "rb")) != NULL) {
-        char buf[READBUFFERSIZE];
         size_t buflen;
         config->currentpath = info->fullpath;
-        while ((buflen = fread(buf, 1, READBUFFERSIZE, src)) > 0) {
-          multifinder_process(config->finder, buf, buflen);
+        while ((buflen = fread(config->readbuffer, 1, READBUFFERSIZE, src)) > 0) {
+          multifinder_process(config->finder, config->readbuffer, buflen);
         }
         multifinder_finalize(config->finder);
         fclose(src);
@@ -143,7 +143,8 @@ int main (int argc, char *argv[], char *envp[])
     .dst = stdout,
     .simplesearch = 0,
     .finder = NULL,
-    .currentpath = NULL
+    .currentpath = NULL,
+    .readbuffer = NULL
   };
   //definition of command line arguments
   const miniargv_definition argdef[] = {
@@ -214,6 +215,10 @@ int main (int argc, char *argv[], char *envp[])
   if (!config.simplesearch) {
     if ((config.finder = multifinder_create(data_found, NULL, &config)) != NULL) {
       multifinder_add_pattern(config.finder, "JndiLookup.class", MULTIFIND_PATTERN_CASE_SENSITIVE, NULL);
+      if ((config.readbuffer = (char*)malloc(READBUFFERSIZE)) == NULL) {
+        fprintf(stderr, "Memory allocation error, falling back to simple search\n");
+        config.simplesearch = 0;
+      }
     } else {
       fprintf(stderr, "Error initializing search, falling back to simple search\n");
       config.simplesearch = 0;
@@ -260,8 +265,11 @@ int main (int argc, char *argv[], char *envp[])
   printf("Files found: %" PRIu64 "\n", config.count);
 
   //clean up
-  if (config.finder)
+  if (config.finder) {
     multifinder_free(config.finder);
+    if (config.readbuffer)
+      free(config.readbuffer);
+  }
   return 0;
 }
 

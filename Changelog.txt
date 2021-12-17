@@ -1,3 +1,9 @@
+0.0.4
+
+2021-12-17  Brecht Sanders  https://github.com/brechtsanders/
+
+  * use 32K read buffer for scanning files (instead of 2K)
+
 0.0.3
 
 2021-12-17  Brecht Sanders  https://github.com/brechtsanders/
