@@ -45,6 +45,8 @@ jobs:
       run: |
         git clone https://github.com/brechtsanders/libmultifinder
         cd libmultifinder
+        cmake --version
+        ninja --version
         make install PREFIX=../deps DOXYGEN= CC=${{ matrix.config.cc }}
     - name: Compile, install, package
       run: |
