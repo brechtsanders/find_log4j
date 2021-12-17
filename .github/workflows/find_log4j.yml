@@ -31,6 +31,7 @@ jobs:
           }
     steps:
     - uses: actions/checkout@v1
+    - uses: seanmiddleditch/gha-setup-ninja@master
     - name: Prerequisite miniargv
       run: |
         git clone https://github.com/brechtsanders/miniargv
