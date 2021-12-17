@@ -41,6 +41,11 @@ jobs:
         git clone https://github.com/brechtsanders/libdirtrav
         cd libdirtrav
         make install PREFIX=../deps DOXYGEN= CC=${{ matrix.config.cc }}
+    - name: Prerequisite libmultifinder
+      run: |
+        git clone https://github.com/brechtsanders/libmultifinder
+        cd libdirtrav
+        make install PREFIX=../deps DOXYGEN= CC=${{ matrix.config.cc }}
     - name: Compile, install, package
       run: |
         make install PREFIX=build_result STATIC=1 CC=${{ matrix.config.cc }} CFLAGS=-Ideps/include LDFLAGS=-Ldeps/lib

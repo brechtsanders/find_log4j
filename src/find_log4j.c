@@ -61,7 +61,8 @@ int file_found (dirtrav_entry info)
   //printf("%s\n", info->fullpath); return 0;/////
   struct config_struct* config = (struct config_struct*)info->callbackdata;
   const char* ext = dirtrav_prop_get_extension(info);
-  if (ext && strcasecmp(ext, ".jar") == 0) {
+  //if (ext && strcasecmp(ext, ".jar") == 0) {
+  if (ext && (strcasecmp(ext, ".jar") == 0 || strcasecmp(ext, ".ear") == 0 || strcasecmp(ext, ".war") == 0)) {
     if (strcasestr(dirtrav_prop_get_name(info), "log4j-") != NULL) {
       config->count++;
       fprintf(config->dst, "%s\n", info->fullpath);
@@ -81,7 +82,13 @@ int folder_found (dirtrav_entry info)
 }
 #endif
 
-int drive_found (dirtrav_entry info)
+int scan_path (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  //printf("%s\n", value); return 0;/////
+  return dirtrav_traverse_directory(value, file_found, folder_found, NULL, callbackdata);
+}
+
+int scan_root (dirtrav_entry info)
 {
   //printf("%s\n", info->fullpath); return 0;/////
   return dirtrav_traverse_directory(info->fullpath, file_found, folder_found, NULL, info->callbackdata);
@@ -105,10 +112,11 @@ int main (int argc, char *argv[], char *envp[])
     {'o', "output",          "FILE", miniargv_cb_strdup,        &dstfilename,      "file where to write output to (\"-\" for console)\nif not specified a file <hostname>.txt will be created in the same folder as the executable file"},
     {'p', "parent",          NULL,   miniargv_cb_increment_int, &createparentpath, "create directory output file if it doesn't exist yet"},
     {'d', "delete",          NULL,   miniargv_cb_increment_int, &deleteifempty,    "delete output file if nothing was found"},
+    {0,   NULL,              "PATH", scan_path,                 NULL,              "path(s) to scan (default is to scan all disks)"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
   //parse environment and command line flags
-  if (miniargv_process_arg(argv, argdef, NULL, NULL) != 0)
+  if (miniargv_process_arg_flags(argv, argdef, NULL, NULL) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (showhelp /*|| argc <= 1*/) {
@@ -182,8 +190,13 @@ int main (int argc, char *argv[], char *envp[])
     }
   }
 
-  //scan disk(s)
-  dirtrav_iterate_roots(drive_found, &config);
+  if (miniargv_get_next_arg_param(0, argv, argdef, NULL) == 0) {
+    //scan disk(s)
+    dirtrav_iterate_roots(scan_root, &config);
+  } else {
+    //scan selected path(s)
+    miniargv_process_arg_params(argv, argdef, NULL, &config);
+  }
 
   //close output file
   fclose(config.dst);
@@ -198,3 +211,5 @@ int main (int argc, char *argv[], char *envp[])
 
   return 0;
 }
+
+//Safe Log4J: Java 8: 2.16.0, Java 7: 2.12.2
