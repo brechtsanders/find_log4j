@@ -3,7 +3,8 @@
 2021-12-17  Brecht Sanders  https://github.com/brechtsanders/
 
   * added support for specifying specific paths as command line arguments
-  * also search for extensions .ear and .war (instead of just .jar)
+  * added -s for simple search (*log4j-*.jar) which was the default before
+  * default search scans contents of *.jar/*.ear/*.war files for "JndiLookup.class"
 
 0.0.2
 

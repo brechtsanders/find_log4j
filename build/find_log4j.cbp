@@ -53,7 +53,7 @@
 				<Option object_output="obj/Debug64/" />
 				<Option type="1" />
 				<Option compiler="MINGW64" />
-				<Option parameters="-o-" />
+				<Option parameters="-o- .." />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -81,6 +81,7 @@
 			<Add option="-static" />
 			<Add library="miniargv" />
 			<Add library="dirtrav" />
+			<Add library="multifinder" />
 		</Linker>
 		<Unit filename="../src/find_log4j.c">
 			<Option compilerVar="CC" />

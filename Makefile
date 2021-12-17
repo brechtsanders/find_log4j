@@ -50,6 +50,7 @@ PACKAGE_NAME := find_log4j
 
 MINIARGV_LDFLAGS = -lminiargv
 LIBDIRTRAV_LDFLAGS = -ldirtrav
+LIBMULTIFINDER_LDFLAGS = -lmultifinder
 
 ifneq ($(OS),Windows_NT)
 SHARED_CFLAGS += -fPIC
@@ -66,7 +67,7 @@ all: $(TOOLS_BIN)
 	$(CC) -c -o $@ $< $(CFLAGS) 
 
 find_log4j$(BINEXT): src/find_log4j.o
-	$(CC) -o $@ $^ $(STRIPFLAG) $(MINIARGV_LDFLAGS) $(LIBDIRTRAV_LDFLAGS) $(LDFLAGS)
+	$(CC) -o $@ $^ $(STRIPFLAG) $(MINIARGV_LDFLAGS) $(LIBDIRTRAV_LDFLAGS) $(LIBMULTIFINDER_LDFLAGS) $(LDFLAGS)
 
 tools: $(TOOLS_BIN)
 

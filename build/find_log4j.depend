@@ -11,7 +11,7 @@
 	<dirtrav.h>
 	<quickmail.h>
 
-1639735799 source:z:\find_log4j\src\find_log4j.c
+1639741742 source:z:\find_log4j\src\find_log4j.c
 	<stdlib.h>
 	<stdio.h>
 	<stdint.h>
@@ -23,6 +23,7 @@
 	<limits.h>
 	<miniargv.h>
 	<dirtrav.h>
+	<multifinder.h>
 	"find_log4j_version.h"
 
 1639735588 z:\find_log4j\src\find_log4j_version.h
