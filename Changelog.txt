@@ -1,3 +1,9 @@
+0.0.5
+
+2021-12-21  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fix issue on older Windows operating systems (like Windows XP)
+
 0.0.4
 
 2021-12-17  Brecht Sanders  https://github.com/brechtsanders/

@@ -14,7 +14,7 @@
 /*! \brief minor version number */
 #define FIND_LOG4J_VERSION_MINOR 0
 /*! \brief micro version number */
-#define FIND_LOG4J_VERSION_MICRO 4
+#define FIND_LOG4J_VERSION_MICRO 5
 /*! @} */
 
 /*! \brief packed version number */
