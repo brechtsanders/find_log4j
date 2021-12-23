@@ -5,6 +5,14 @@ Searches all disks for Apache Log4j Security Vulnerabilities ([CVE-2021-45046](h
 Description
 -----------
 This command line application searches all disks for Apache Log4j Security Vulnerabilities ([CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228)) and writes the matching paths to <hostname>.txt in the same folder as the executable or to a specified file.
+If no matches were found the resulting file will be empty.
+Files are considered vulnerable if they meet all of the following criteria:
+- the file extension is one of the following:
+    - `.jar`
+    - `.ear`
+    - `.war`
+- the file contains the following data:
+    - `JndiLookup.class`
 
 Goals
 -----
