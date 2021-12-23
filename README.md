@@ -10,7 +10,7 @@ This tool was needed when Apache Log4j Security Vulnerabilities [CVE-2021-45046]
 Command line help
 -----------------
 ```
-find_log4j - Version 0.0.3 - MIT - Brecht Sanders (2021)
+find_log4j - Version 0.0.5 - MIT - Brecht Sanders (2021)
 Tool to search for Apache Log4j Security Vulnerabilities CVE-2021-45046 and CVE-2021-44228
 Usage: find_log4j [-h] [-v] [-o FILE] [-p] [-d] [-s] PATH
 Command line arguments:
