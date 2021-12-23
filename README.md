@@ -1,17 +1,17 @@
 find_log4j
 ==========
-Searches all disks for log4j-*.jar files and writes the matching paths to <hostname>.txt in the same folder as the executable
+Searches all disks for Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228).
 
 Description
 -----------
-This command line application searches all disks for log4j-*.jar files and writes the matching paths to <hostname>.txt in the same folder as the executable.
-This tool was needed when Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228) were exposed.
+This command line application searches all disks for Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228) and writes the matching paths to <hostname>.txt in the same folder as the executable or to a specified file.
 
 Goals
 -----
 - low footprint (small single executable file)
 - low system requirements (even runs on Windows XP)
-- portable, the code is cross-platform and can be built on Windows, macOS, Linux, and possible other platforms
+- portable: the code is cross-platform and can be built on Windows, macOS, Linux, and possible other platforms
+- simple: no installation procedure, no config files, no registry entries, the only uninstallation step is deleting the program
 
 Command line help
 -----------------
