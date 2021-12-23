@@ -1,10 +1,10 @@
 find_log4j
 ==========
-Searches all disks for Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228).
+Searches all disks for Apache Log4j Security Vulnerabilities ([CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228)).
 
 Description
 -----------
-This command line application searches all disks for Apache Log4j Security Vulnerabilities [CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228) and writes the matching paths to <hostname>.txt in the same folder as the executable or to a specified file.
+This command line application searches all disks for Apache Log4j Security Vulnerabilities ([CVE-2021-45046](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45046) and [CVE-2021-44228](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228)) and writes the matching paths to <hostname>.txt in the same folder as the executable or to a specified file.
 
 Goals
 -----
